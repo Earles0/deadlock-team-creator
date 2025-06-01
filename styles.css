@@ -623,25 +623,25 @@ body::before {
 .yellow-lane {
     grid-column: 1;
     grid-row: 1;
-    border-color: #b8860b;
+    border-color: #daa520;
     background: 
-        linear-gradient(135deg, rgba(184, 134, 11, 0.1) 0%, rgba(31, 27, 22, 0.95) 100%);
+        linear-gradient(135deg, rgba(218, 165, 32, 0.1) 0%, rgba(31, 27, 22, 0.95) 100%);
 }
 
 .blue-lane {
     grid-column: 2;
     grid-row: 1;
-    border-color: #4682b4;
+    border-color: #87ceeb;
     background: 
-        linear-gradient(135deg, rgba(70, 130, 180, 0.1) 0%, rgba(31, 27, 22, 0.95) 100%);
+        linear-gradient(135deg, rgba(135, 206, 235, 0.1) 0%, rgba(31, 27, 22, 0.95) 100%);
 }
 
 .purple-lane {
     grid-column: 1 / -1;
     grid-row: 2;
-    border-color: #8b45ff;
+    border-color: #dda0dd;
     background: 
-        linear-gradient(135deg, rgba(139, 69, 255, 0.1) 0%, rgba(31, 27, 22, 0.95) 100%);
+        linear-gradient(135deg, rgba(221, 160, 221, 0.1) 0%, rgba(31, 27, 22, 0.95) 100%);
 }
 
 /* Lane Cards */
@@ -677,11 +677,23 @@ body::before {
 .lane-header h4 {
     font-size: 1.4rem;
     font-weight: 700;
-    color: #daa520;
     font-family: 'Cinzel', serif;
     letter-spacing: 0.8px;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
     margin: 0;
+}
+
+/* Lane-specific header colors */
+.yellow-lane .lane-header h4 {
+    color: #daa520;
+}
+
+.blue-lane .lane-header h4 {
+    color: #87ceeb;
+}
+
+.purple-lane .lane-header h4 {
+    color: #dda0dd;
 }
 
 .balance-score {
