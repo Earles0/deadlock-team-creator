@@ -277,14 +277,17 @@ function createLaneMatchups() {
     const blueBalance = balanceTier(midTier);
     const purpleBalance = balanceTier(lowTier);
     
-    const lanes = {
+    let lanes = {
         yellow: yellowBalance,
         blue: blueBalance,
         purple: purpleBalance
     };
     
+    // NEW: Optimize overall balance by trying lane team swaps
+    lanes = optimizeOverallBalance(lanes);
+    
     // Log the balance for debugging
-    console.log('Lane Balance Analysis:');
+    console.log('Lane Balance Analysis (After Optimization):');
     Object.keys(lanes).forEach(laneKey => {
         const lane = lanes[laneKey];
         const teamATotal = lane.teamA.reduce((sum, p) => sum + p.mmr, 0);
@@ -304,6 +307,90 @@ function createLaneMatchups() {
     console.log(`Overall Balance: Sapphire Flame=${teamATotal} vs Amber Hand=${teamBTotal}, Diff=${Math.abs(teamATotal - teamBTotal)}`);
     
     displayLanes(lanes, teamA, teamB);
+}
+
+// NEW: Function to optimize overall balance by trying lane team swaps
+function optimizeOverallBalance(initialLanes) {
+    const laneNames = ['yellow', 'blue', 'purple'];
+    let bestLanes = JSON.parse(JSON.stringify(initialLanes)); // Deep copy
+    let bestSwapCombination = '';
+    
+    // Calculate initial overall balance
+    function calculateOverallBalance(lanes) {
+        const teamA = [...lanes.yellow.teamA, ...lanes.blue.teamA, ...lanes.purple.teamA];
+        const teamB = [...lanes.yellow.teamB, ...lanes.blue.teamB, ...lanes.purple.teamB];
+        
+        const teamATotal = teamA.reduce((sum, p) => sum + p.mmr, 0);
+        const teamBTotal = teamB.reduce((sum, p) => sum + p.mmr, 0);
+        
+        return Math.abs(teamATotal - teamBTotal);
+    }
+    
+    const initialBalance = calculateOverallBalance(initialLanes);
+    let bestBalance = initialBalance;
+    
+    console.log(`🔍 BALANCE OPTIMIZATION STARTING`);
+    console.log(`Initial overall balance difference: ${initialBalance} MMR`);
+    
+    // Try all possible combinations of lane swaps
+    // Each lane can be in original orientation or swapped
+    // This gives us 2^3 = 8 possible combinations
+    for (let i = 0; i < 8; i++) {
+        const testLanes = JSON.parse(JSON.stringify(initialLanes)); // Deep copy
+        
+        // Determine which lanes to swap based on binary representation of i
+        const swapYellow = (i & 1) !== 0;   // Bit 0
+        const swapBlue = (i & 2) !== 0;     // Bit 1
+        const swapPurple = (i & 4) !== 0;   // Bit 2
+        
+        // Apply swaps
+        if (swapYellow) {
+            [testLanes.yellow.teamA, testLanes.yellow.teamB] = [testLanes.yellow.teamB, testLanes.yellow.teamA];
+        }
+        if (swapBlue) {
+            [testLanes.blue.teamA, testLanes.blue.teamB] = [testLanes.blue.teamB, testLanes.blue.teamA];
+        }
+        if (swapPurple) {
+            [testLanes.purple.teamA, testLanes.purple.teamB] = [testLanes.purple.teamB, testLanes.purple.teamA];
+        }
+        
+        // Calculate balance for this configuration
+        const balance = calculateOverallBalance(testLanes);
+        
+        // Log this attempt
+        const swapDescription = [
+            swapYellow ? 'Yellow' : '',
+            swapBlue ? 'Blue' : '',
+            swapPurple ? 'Purple' : ''
+        ].filter(s => s).join(', ') || 'None';
+        console.log(`  Configuration ${i}: Swapped lanes: ${swapDescription}, Balance difference: ${balance} MMR`);
+        
+        // If this is better, save it
+        if (balance < bestBalance) {
+            bestBalance = balance;
+            bestLanes = JSON.parse(JSON.stringify(testLanes));
+            bestSwapCombination = swapDescription;
+            console.log(`    ⭐ NEW BEST BALANCE FOUND! Difference: ${balance} MMR`);
+        }
+    }
+    
+    const improvement = initialBalance - bestBalance;
+    
+    console.log(`\n🎯 OPTIMIZATION COMPLETE:`);
+    console.log(`Final optimized balance difference: ${bestBalance} MMR`);
+    console.log(`Improvement: ${improvement} MMR (${((improvement/initialBalance)*100).toFixed(1)}%)`);
+    console.log(`Best configuration: ${bestSwapCombination === '' ? 'Original (no swaps needed)' : `Swapped ${bestSwapCombination} lane(s)`}`);
+    
+    // Add a visual indicator if significant improvement was made
+    if (improvement > 50) {
+        console.log(`🚀 Significant improvement achieved! Teams are now much more balanced.`);
+    } else if (improvement > 0) {
+        console.log(`✅ Minor improvement achieved.`);
+    } else {
+        console.log(`ℹ️ Original configuration was already optimal.`);
+    }
+    
+    return bestLanes;
 }
 
 // Real-time balance calculation from current assignments
