@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deadlock Lane Creator</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-map"></i>
+                <h1>Deadlock Lane Creator</h1>
+            </div>
+            <p class="subtitle">Create balanced 3-lane 2v2 matchups based on player ranks</p>
+        </header>
+
+        <main class="main-content">
+            <div class="input-section">
+                <div class="add-player-form">
+                    <h2>Add Players</h2>
+                    <div class="form-group">
+                        <input type="text" id="playerName" placeholder="Player Name" required>
+                        <select id="playerRank" required>
+                            <option value="">Select Rank</option>
+                            <option value="initiate">Initiate</option>
+                            <option value="seeker">Seeker</option>
+                            <option value="alchemist">Alchemist</option>
+                            <option value="arcanist">Arcanist</option>
+                            <option value="ritualist">Ritualist</option>
+                            <option value="emissary">Emissary</option>
+                            <option value="archon">Archon</option>
+                            <option value="oracle">Oracle</option>
+                            <option value="phantom">Phantom</option>
+                            <option value="ascendant">Ascendant</option>
+                            <option value="eternus">Eternus</option>
+                        </select>
+                        <select id="playerSubrank">
+                            <option value="1">I</option>
+                            <option value="2">II</option>
+                            <option value="3">III</option>
+                            <option value="4">IV</option>
+                            <option value="5">V</option>
+                            <option value="6">VI</option>
+                        </select>
+                        <button type="button" id="addPlayerBtn">
+                            <i class="fas fa-plus"></i> Add Player
+                        </button>
+                    </div>
+                </div>
+
+                <div class="controls">
+                    <button id="createLanesBtn" class="create-lanes-btn" disabled>
+                        <i class="fas fa-magic"></i> Create Lane Matchups
+                    </button>
+                    <button id="clearAllBtn" class="clear-btn">
+                        <i class="fas fa-trash"></i> Clear All
+                    </button>
+                    <button id="quickTestBtn" class="quick-test-btn">
+                        <i class="fas fa-bolt"></i> Quick Test
+                    </button>
+                </div>
+
+                <div class="requirements">
+                    <p><i class="fas fa-info-circle"></i> Need exactly 12 players for 6v6 lane matchups</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                        <span class="progress-text" id="progressText">0/12 players</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="players-section">
+                <h3>Players Pool (<span id="playerCount">0</span>)</h3>
+                <div id="playersList" class="players-list">
+                    <div class="empty-state">
+                        <i class="fas fa-user-friends"></i>
+                        <p>No players added yet. Add 12 players to create lane matchups!</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lanes-section" id="lanesSection" style="display: none;">
+                <h3>Lane Matchups</h3>
+                <div class="balance-stats">
+                    <div class="stat">
+                        <span class="stat-label">Sapphire Flame Avg MMR:</span>
+                        <span id="teamAAvg" class="stat-value">-</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Amber Hand Avg MMR:</span>
+                        <span id="teamBAvg" class="stat-value">-</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Overall Balance:</span>
+                        <span id="overallBalance" class="stat-value">-</span>
+                    </div>
+                </div>
+
+                <div class="lanes-container">
+                    <!-- Yellow Lane -->
+                    <div class="lane-group yellow-group">
+                        <div class="group-header">
+                            <i class="fas fa-sun"></i>
+                            <h4>Yellow Lane</h4>
+                            <span class="lane-balance" id="yellowLaneBalance">-</span>
+                        </div>
+                        
+                        <div class="lane-content">
+                            <div class="team-side team-a-side">
+                                <div class="team-header">Sapphire Flame</div>
+                                <div class="players-group">
+                                    <div id="yellowLaneTeamA1" class="player-slot drop-zone" data-team="sapphire" data-lane="yellow" data-position="1">
+                                        <div class="empty-slot">Player 1</div>
+                                    </div>
+                                    <div id="yellowLaneTeamA2" class="player-slot drop-zone" data-team="sapphire" data-lane="yellow" data-position="2">
+                                        <div class="empty-slot">Player 2</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="vs-separator">VS</div>
+                            
+                            <div class="team-side team-b-side">
+                                <div class="team-header">Amber Hand</div>
+                                <div class="players-group">
+                                    <div id="yellowLaneTeamB1" class="player-slot drop-zone" data-team="amber" data-lane="yellow" data-position="1">
+                                        <div class="empty-slot">Player 1</div>
+                                    </div>
+                                    <div id="yellowLaneTeamB2" class="player-slot drop-zone" data-team="amber" data-lane="yellow" data-position="2">
+                                        <div class="empty-slot">Player 2</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Blue Lane -->
+                    <div class="lane-group blue-group">
+                        <div class="group-header">
+                            <i class="fas fa-water"></i>
+                            <h4>Blue Lane</h4>
+                            <span class="lane-balance" id="blueLaneBalance">-</span>
+                        </div>
+                        
+                        <div class="lane-content">
+                            <div class="team-side team-a-side">
+                                <div class="team-header">Sapphire Flame</div>
+                                <div class="players-group">
+                                    <div id="blueLaneTeamA1" class="player-slot drop-zone" data-team="sapphire" data-lane="blue" data-position="1">
+                                        <div class="empty-slot">Player 1</div>
+                                    </div>
+                                    <div id="blueLaneTeamA2" class="player-slot drop-zone" data-team="sapphire" data-lane="blue" data-position="2">
+                                        <div class="empty-slot">Player 2</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="vs-separator">VS</div>
+                            
+                            <div class="team-side team-b-side">
+                                <div class="team-header">Amber Hand</div>
+                                <div class="players-group">
+                                    <div id="blueLaneTeamB1" class="player-slot drop-zone" data-team="amber" data-lane="blue" data-position="1">
+                                        <div class="empty-slot">Player 1</div>
+                                    </div>
+                                    <div id="blueLaneTeamB2" class="player-slot drop-zone" data-team="amber" data-lane="blue" data-position="2">
+                                        <div class="empty-slot">Player 2</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Purple Lane -->
+                    <div class="lane-group purple-group">
+                        <div class="group-header">
+                            <i class="fas fa-shield-alt"></i>
+                            <h4>Purple Lane</h4>
+                            <span class="lane-balance" id="purpleLaneBalance">-</span>
+                        </div>
+                        
+                        <div class="lane-content">
+                            <div class="team-side team-a-side">
+                                <div class="team-header">Sapphire Flame</div>
+                                <div class="players-group">
+                                    <div id="purpleLaneTeamA1" class="player-slot drop-zone" data-team="sapphire" data-lane="purple" data-position="1">
+                                        <div class="empty-slot">Player 1</div>
+                                    </div>
+                                    <div id="purpleLaneTeamA2" class="player-slot drop-zone" data-team="sapphire" data-lane="purple" data-position="2">
+                                        <div class="empty-slot">Player 2</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="vs-separator">VS</div>
+                            
+                            <div class="team-side team-b-side">
+                                <div class="team-header">Amber Hand</div>
+                                <div class="players-group">
+                                    <div id="purpleLaneTeamB1" class="player-slot drop-zone" data-team="amber" data-lane="purple" data-position="1">
+                                        <div class="empty-slot">Player 1</div>
+                                    </div>
+                                    <div id="purpleLaneTeamB2" class="player-slot drop-zone" data-team="amber" data-lane="purple" data-position="2">
+                                        <div class="empty-slot">Player 2</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>Made for Valve's Deadlock • 3-Lane 2v2 System • Ranks updated as of November 2024</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
