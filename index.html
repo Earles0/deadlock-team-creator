@@ -102,111 +102,90 @@
 
                 <div class="lanes-container">
                     <!-- Yellow Lane -->
-                    <div class="lane-group yellow-group">
-                        <div class="group-header">
-                            <i class="fas fa-sun"></i>
-                            <h4>Yellow Lane</h4>
-                            <span class="lane-balance" id="yellowLaneBalance">-</span>
+                    <div class="lane-card yellow-lane">
+                        <div class="lane-header">
+                            <h4>🌟 Yellow Lane</h4>
+                            <span class="balance-score" id="yellowLaneBalance">-</span>
                         </div>
                         
-                        <div class="lane-content">
-                            <div class="team-side team-a-side">
-                                <div class="team-header">Sapphire Flame</div>
-                                <div class="players-group">
-                                    <div id="yellowLaneTeamA1" class="player-slot drop-zone" data-team="sapphire" data-lane="yellow" data-position="1">
-                                        <div class="empty-slot">Player 1</div>
-                                    </div>
-                                    <div id="yellowLaneTeamA2" class="player-slot drop-zone" data-team="sapphire" data-lane="yellow" data-position="2">
-                                        <div class="empty-slot">Player 2</div>
-                                    </div>
+                        <div class="teams-container">
+                            <div class="team-column sapphire-team">
+                                <div class="team-title">Sapphire Flame</div>
+                                <div class="player-slot" id="yellowLaneTeamA1" data-team="sapphire" data-lane="yellow" data-position="1">
+                                    <div class="empty-player">Player 1</div>
+                                </div>
+                                <div class="player-slot" id="yellowLaneTeamA2" data-team="sapphire" data-lane="yellow" data-position="2">
+                                    <div class="empty-player">Player 2</div>
                                 </div>
                             </div>
                             
-                            <div class="vs-separator">VS</div>
-                            
-                            <div class="team-side team-b-side">
-                                <div class="team-header">Amber Hand</div>
-                                <div class="players-group">
-                                    <div id="yellowLaneTeamB1" class="player-slot drop-zone" data-team="amber" data-lane="yellow" data-position="1">
-                                        <div class="empty-slot">Player 1</div>
-                                    </div>
-                                    <div id="yellowLaneTeamB2" class="player-slot drop-zone" data-team="amber" data-lane="yellow" data-position="2">
-                                        <div class="empty-slot">Player 2</div>
-                                    </div>
+                            <div class="team-column amber-team">
+                                <div class="team-title">Amber Hand</div>
+                                <div class="player-slot" id="yellowLaneTeamB1" data-team="amber" data-lane="yellow" data-position="1">
+                                    <div class="empty-player">Player 1</div>
+                                </div>
+                                <div class="player-slot" id="yellowLaneTeamB2" data-team="amber" data-lane="yellow" data-position="2">
+                                    <div class="empty-player">Player 2</div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Blue Lane -->
-                    <div class="lane-group blue-group">
-                        <div class="group-header">
-                            <i class="fas fa-water"></i>
-                            <h4>Blue Lane</h4>
-                            <span class="lane-balance" id="blueLaneBalance">-</span>
+                    <div class="lane-card blue-lane">
+                        <div class="lane-header">
+                            <h4>💧 Blue Lane</h4>
+                            <span class="balance-score" id="blueLaneBalance">-</span>
                         </div>
                         
-                        <div class="lane-content">
-                            <div class="team-side team-a-side">
-                                <div class="team-header">Sapphire Flame</div>
-                                <div class="players-group">
-                                    <div id="blueLaneTeamA1" class="player-slot drop-zone" data-team="sapphire" data-lane="blue" data-position="1">
-                                        <div class="empty-slot">Player 1</div>
-                                    </div>
-                                    <div id="blueLaneTeamA2" class="player-slot drop-zone" data-team="sapphire" data-lane="blue" data-position="2">
-                                        <div class="empty-slot">Player 2</div>
-                                    </div>
+                        <div class="teams-container">
+                            <div class="team-column sapphire-team">
+                                <div class="team-title">Sapphire Flame</div>
+                                <div class="player-slot" id="blueLaneTeamA1" data-team="sapphire" data-lane="blue" data-position="1">
+                                    <div class="empty-player">Player 1</div>
+                                </div>
+                                <div class="player-slot" id="blueLaneTeamA2" data-team="sapphire" data-lane="blue" data-position="2">
+                                    <div class="empty-player">Player 2</div>
                                 </div>
                             </div>
                             
-                            <div class="vs-separator">VS</div>
-                            
-                            <div class="team-side team-b-side">
-                                <div class="team-header">Amber Hand</div>
-                                <div class="players-group">
-                                    <div id="blueLaneTeamB1" class="player-slot drop-zone" data-team="amber" data-lane="blue" data-position="1">
-                                        <div class="empty-slot">Player 1</div>
-                                    </div>
-                                    <div id="blueLaneTeamB2" class="player-slot drop-zone" data-team="amber" data-lane="blue" data-position="2">
-                                        <div class="empty-slot">Player 2</div>
-                                    </div>
+                            <div class="team-column amber-team">
+                                <div class="team-title">Amber Hand</div>
+                                <div class="player-slot" id="blueLaneTeamB1" data-team="amber" data-lane="blue" data-position="1">
+                                    <div class="empty-player">Player 1</div>
+                                </div>
+                                <div class="player-slot" id="blueLaneTeamB2" data-team="amber" data-lane="blue" data-position="2">
+                                    <div class="empty-player">Player 2</div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Purple Lane -->
-                    <div class="lane-group purple-group">
-                        <div class="group-header">
-                            <i class="fas fa-shield-alt"></i>
-                            <h4>Purple Lane</h4>
-                            <span class="lane-balance" id="purpleLaneBalance">-</span>
+                    <div class="lane-card purple-lane">
+                        <div class="lane-header">
+                            <h4>🔮 Purple Lane</h4>
+                            <span class="balance-score" id="purpleLaneBalance">-</span>
                         </div>
                         
-                        <div class="lane-content">
-                            <div class="team-side team-a-side">
-                                <div class="team-header">Sapphire Flame</div>
-                                <div class="players-group">
-                                    <div id="purpleLaneTeamA1" class="player-slot drop-zone" data-team="sapphire" data-lane="purple" data-position="1">
-                                        <div class="empty-slot">Player 1</div>
-                                    </div>
-                                    <div id="purpleLaneTeamA2" class="player-slot drop-zone" data-team="sapphire" data-lane="purple" data-position="2">
-                                        <div class="empty-slot">Player 2</div>
-                                    </div>
+                        <div class="teams-container">
+                            <div class="team-column sapphire-team">
+                                <div class="team-title">Sapphire Flame</div>
+                                <div class="player-slot" id="purpleLaneTeamA1" data-team="sapphire" data-lane="purple" data-position="1">
+                                    <div class="empty-player">Player 1</div>
+                                </div>
+                                <div class="player-slot" id="purpleLaneTeamA2" data-team="sapphire" data-lane="purple" data-position="2">
+                                    <div class="empty-player">Player 2</div>
                                 </div>
                             </div>
                             
-                            <div class="vs-separator">VS</div>
-                            
-                            <div class="team-side team-b-side">
-                                <div class="team-header">Amber Hand</div>
-                                <div class="players-group">
-                                    <div id="purpleLaneTeamB1" class="player-slot drop-zone" data-team="amber" data-lane="purple" data-position="1">
-                                        <div class="empty-slot">Player 1</div>
-                                    </div>
-                                    <div id="purpleLaneTeamB2" class="player-slot drop-zone" data-team="amber" data-lane="purple" data-position="2">
-                                        <div class="empty-slot">Player 2</div>
-                                    </div>
+                            <div class="team-column amber-team">
+                                <div class="team-title">Amber Hand</div>
+                                <div class="player-slot" id="purpleLaneTeamB1" data-team="amber" data-lane="purple" data-position="1">
+                                    <div class="empty-player">Player 1</div>
+                                </div>
+                                <div class="player-slot" id="purpleLaneTeamB2" data-team="amber" data-lane="purple" data-position="2">
+                                    <div class="empty-player">Player 2</div>
                                 </div>
                             </div>
                         </div>

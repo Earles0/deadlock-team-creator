@@ -309,14 +309,14 @@ function createLaneMatchups() {
 // Real-time balance calculation from current assignments
 function recalculateBalanceFromAssignments() {
     // Get all current players from slots
-    const allSlots = document.querySelectorAll('.player-slot .lane-player');
+    const allSlots = document.querySelectorAll('.player-slot .player-card-lane');
     const sapphireFlame = [];
     const amberHand = [];
     
     allSlots.forEach(playerElement => {
         const slot = playerElement.closest('.player-slot');
         const team = slot.dataset.team;
-        const playerName = playerElement.querySelector('.player-name').textContent;
+        const playerName = playerElement.querySelector('.player-name-lane').textContent;
         const player = players.find(p => p.name === playerName);
         
         if (player) {
@@ -347,9 +347,9 @@ function recalculateBalanceFromAssignments() {
         const amberLane = [];
         
         laneElements.forEach(slot => {
-            const playerElement = slot.querySelector('.lane-player');
+            const playerElement = slot.querySelector('.player-card-lane');
             if (playerElement) {
-                const playerName = playerElement.querySelector('.player-name').textContent;
+                const playerName = playerElement.querySelector('.player-name-lane').textContent;
                 const player = players.find(p => p.name === playerName);
                 if (player) {
                     if (slot.dataset.team === 'sapphire') {
@@ -372,28 +372,55 @@ function recalculateBalanceFromAssignments() {
 let draggedElement = null;
 let draggedPlayerData = null;
 
-// Create player content for a slot (without icons)
+// Create player content for a slot with new design
 function createPlayerSlotContent(slot, playerData) {
-    const playerElement = document.createElement('div');
-    playerElement.className = 'lane-player';
-    playerElement.innerHTML = `
-        <img src="${getRankIcon(playerData.rank)}" alt="${playerData.rank}" class="rank-icon" onerror="this.style.display='none'">
-        <div class="rank-tier">${formatRank(playerData.rank, playerData.subrank)}</div>
-        <div class="player-name">${playerData.name}</div>
+    console.log('Creating player slot content for:', playerData.name, 'in slot:', slot.id);
+    
+    if (!slot) {
+        console.error('No slot provided to createPlayerSlotContent');
+        return;
+    }
+    
+    if (!playerData) {
+        console.error('No player data provided to createPlayerSlotContent');
+        return;
+    }
+    
+    // Clear the slot first
+    slot.innerHTML = '';
+    
+    // Create the new player card structure
+    const playerCard = document.createElement('div');
+    playerCard.className = 'player-card-lane';
+    playerCard.innerHTML = `
+        <img src="${getRankIcon(playerData.rank)}" alt="${playerData.rank}" class="player-rank-icon" onerror="this.style.display='none'">
+        <div class="player-info-lane">
+            <div class="player-rank-text">${formatRank(playerData.rank, playerData.subrank)}</div>
+            <div class="player-name-lane">${playerData.name}</div>
+        </div>
     `;
     
     // Store player data
-    playerElement.playerData = playerData;
-    playerElement.dataset.playerId = playerData.id;
+    playerCard.playerData = playerData;
+    playerCard.dataset.playerId = playerData.id;
     
     // Enable dragging
-    enableDragging(playerElement);
+    enableDragging(playerCard);
     
-    // Clear slot and add player
-    slot.innerHTML = '';
-    slot.appendChild(playerElement);
+    // Add player card to slot
+    slot.appendChild(playerCard);
     
-    console.log('Created player:', playerData.name, 'in slot:', slot.id);
+    console.log('Successfully created player:', playerData.name, 'in slot:', slot.id);
+    
+    // Verify the element was added correctly
+    setTimeout(() => {
+        const verification = slot.querySelector('.player-card-lane');
+        if (verification) {
+            console.log('✓ Player card verified in slot:', slot.id);
+        } else {
+            console.error('✗ Player card NOT found in slot after creation:', slot.id);
+        }
+    }, 10);
 }
 
 // Enable dragging for a player element
@@ -501,7 +528,7 @@ function handleDrop(e) {
     console.log('Dropping', draggedPlayerData.name, 'from', sourceSlot.id, 'to', targetSlot.id);
     
     // Check if target slot has a player
-    const targetPlayer = targetSlot.querySelector('.lane-player');
+    const targetPlayer = targetSlot.querySelector('.player-card-lane');
     
     if (targetPlayer && targetPlayer !== draggedElement) {
         // SWAP: Target slot has a different player
@@ -516,7 +543,7 @@ function handleDrop(e) {
         console.log('Moving to empty slot');
         
         // Clear source slot
-        sourceSlot.innerHTML = '<div class="empty-slot">Player</div>';
+        sourceSlot.innerHTML = '<div class="empty-player">Player</div>';
         
         // Create player in target slot
         createPlayerSlotContent(targetSlot, draggedPlayerData);
@@ -530,7 +557,7 @@ function handleDrop(e) {
 
 // Test function for debugging
 function testDragDrop() {
-    const players = document.querySelectorAll('.lane-player');
+    const players = document.querySelectorAll('.player-card-lane');
     const slots = document.querySelectorAll('.player-slot');
     
     console.log('=== DRAG & DROP TEST ===');
@@ -539,7 +566,7 @@ function testDragDrop() {
     
     players.forEach((player, i) => {
         console.log(`Player ${i + 1}:`, {
-            name: player.querySelector('.player-name')?.textContent,
+            name: player.querySelector('.player-name-lane')?.textContent,
             draggable: player.draggable,
             hasData: !!player.playerData
         });
@@ -638,6 +665,10 @@ window.addFullSampleData = addFullSampleData;
 
 // Display the generated lanes
 function displayLanes(lanes, teamA, teamB) {
+    console.log('=== DISPLAYING LANES ===');
+    console.log('Lanes data:', lanes);
+    console.log('Lane elements:', laneElements);
+    
     const teamAAverage = calculateTeamAverage(teamA);
     const teamBAverage = calculateTeamAverage(teamB);
     const overallDifference = Math.abs(teamAAverage - teamBAverage);
@@ -650,42 +681,133 @@ function displayLanes(lanes, teamA, teamB) {
     overallBalance.textContent = `${overallBalancePercentage}%`;
     overallBalance.style.color = getBalanceScoreColor(overallBalancePercentage);
     
+    // Clear all slots first
+    Object.keys(laneElements).forEach(laneKey => {
+        const element = laneElements[laneKey];
+        element.teamA1.innerHTML = '<div class="empty-player">Player 1</div>';
+        element.teamA2.innerHTML = '<div class="empty-player">Player 2</div>';
+        element.teamB1.innerHTML = '<div class="empty-player">Player 1</div>';
+        element.teamB2.innerHTML = '<div class="empty-player">Player 2</div>';
+    });
+    
     // Display each lane
     Object.keys(lanes).forEach(laneKey => {
         const lane = lanes[laneKey];
         const element = laneElements[laneKey];
-        const laneBalance = calculateLaneBalance(lane.teamA, lane.teamB);
+        
+        console.log(`\n--- ${laneKey.toUpperCase()} LANE ---`);
+        console.log('Lane data:', lane);
+        console.log('Elements:', element);
+        
+        if (!element) {
+            console.error(`No elements found for lane: ${laneKey}`);
+            return;
+        }
+        
+        // Verify we have all the player data
+        if (!lane.teamA || !lane.teamB || lane.teamA.length !== 2 || lane.teamB.length !== 2) {
+            console.error(`Invalid lane data for ${laneKey}:`, lane);
+            return;
+        }
         
         // Team A Player 1 (Sapphire Flame)
+        console.log('Placing Team A Player 1:', lane.teamA[0].name, 'in', element.teamA1.id);
         createPlayerSlotContent(element.teamA1, lane.teamA[0]);
         
         // Team A Player 2 (Sapphire Flame)
+        console.log('Placing Team A Player 2:', lane.teamA[1].name, 'in', element.teamA2.id);
         createPlayerSlotContent(element.teamA2, lane.teamA[1]);
         
         // Team B Player 1 (Amber Hand)
+        console.log('Placing Team B Player 1:', lane.teamB[0].name, 'in', element.teamB1.id);
         createPlayerSlotContent(element.teamB1, lane.teamB[0]);
         
         // Team B Player 2 (Amber Hand)
+        console.log('Placing Team B Player 2:', lane.teamB[1].name, 'in', element.teamB2.id);
         createPlayerSlotContent(element.teamB2, lane.teamB[1]);
         
         // Lane balance
+        const laneBalance = calculateLaneBalance(lane.teamA, lane.teamB);
         element.balance.textContent = `${laneBalance}%`;
         element.balance.style.color = getBalanceScoreColor(laneBalance);
+        
+        console.log(`${laneKey} lane balance: ${laneBalance}%`);
     });
     
     // Show lanes first
     showLanes();
     
-    // Setup drag and drop functionality
+    // Setup drag and drop functionality with a slight delay
     console.log('Setting up drag and drop functionality...');
-    setupDropZones();
-    
-    // Debug: Check what we have
     setTimeout(() => {
+        setupDropZones();
+        
+        // Debug: Check what we have after setup
         const dropZones = document.querySelectorAll('.drop-zone');
-        const players = document.querySelectorAll('.lane-player');
-        console.log('Debug - Drop zones found:', dropZones.length);
-        console.log('Debug - Player cards found:', players.length);
-        console.log('Debug - Player cards draggable:', Array.from(players).map(p => p.draggable));
-    }, 200);
-} 
+        const playerCards = document.querySelectorAll('.player-card-lane');
+        console.log('=== POST-SETUP DEBUG ===');
+        console.log('Drop zones found:', dropZones.length);
+        console.log('Player cards found:', playerCards.length);
+        
+        // Verify each player card
+        playerCards.forEach((card, index) => {
+            const name = card.querySelector('.player-name-lane')?.textContent;
+            const slot = card.closest('.player-slot');
+            console.log(`Player card ${index + 1}: ${name} in slot ${slot?.id || 'unknown'}`);
+            console.log('  - Draggable:', card.draggable);
+            console.log('  - Has player data:', !!card.playerData);
+            console.log('  - Visible:', !card.hidden && card.style.display !== 'none');
+        });
+    }, 100);
+}
+
+// Test function for debugging lane placement
+function testLanePlacement() {
+    console.log('=== LANE PLACEMENT TEST ===');
+    
+    // Check if all lane elements exist
+    const laneKeys = ['yellow', 'blue', 'purple'];
+    const teamKeys = ['teamA1', 'teamA2', 'teamB1', 'teamB2'];
+    
+    laneKeys.forEach(laneKey => {
+        console.log(`\n--- ${laneKey.toUpperCase()} LANE ---`);
+        const laneElement = laneElements[laneKey];
+        
+        if (!laneElement) {
+            console.error(`❌ Lane element missing: ${laneKey}`);
+            return;
+        }
+        
+        teamKeys.forEach(teamKey => {
+            const slot = laneElement[teamKey];
+            if (!slot) {
+                console.error(`❌ Slot missing: ${laneKey}.${teamKey}`);
+                return;
+            }
+            
+            const playerElement = slot.querySelector('.player-card-lane');
+            const emptySlot = slot.querySelector('.empty-player');
+            
+            console.log(`${teamKey}: ${slot.id}`);
+            console.log(`  - Element exists: ✓`);
+            console.log(`  - Has player: ${playerElement ? '✓' : '❌'}`);
+            console.log(`  - Has empty slot: ${emptySlot ? '✓' : '❌'}`);
+            
+            if (playerElement) {
+                const playerName = playerElement.querySelector('.player-name-lane')?.textContent;
+                console.log(`  - Player name: ${playerName}`);
+                console.log(`  - Draggable: ${playerElement.draggable ? '✓' : '❌'}`);
+                console.log(`  - Has data: ${playerElement.playerData ? '✓' : '❌'}`);
+            }
+        });
+    });
+    
+    return {
+        slotsFound: document.querySelectorAll('.player-slot').length,
+        playersFound: document.querySelectorAll('.player-card-lane').length,
+        emptySlots: document.querySelectorAll('.empty-player').length
+    };
+}
+
+// Expose test function
+window.testLanePlacement = testLanePlacement; 
