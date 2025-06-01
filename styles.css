@@ -10,6 +10,8 @@
 body {
     font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
     background: 
+        linear-gradient(rgba(26, 22, 18, 0.75), rgba(31, 27, 22, 0.85)),
+        url('https://lh3.googleusercontent.com/blogger_img_proxy/AEn0k_vkr61VRvj5BDHkflUnPvNrxpIyvtk3tRjLxb-YDMcyYUm9eOM_HUsGhLMk6OdqlRbbMiYobarDj_kMzVR_hwEe0UaIN6g5-aLZMTXBYDLdqHDoqQxZJi62mRYVZOe9vTwi=w919-h516-p-k-no-nu') center/cover no-repeat fixed,
         radial-gradient(circle at 20% 50%, rgba(139, 69, 19, 0.15) 0%, transparent 50%),
         radial-gradient(circle at 80% 20%, rgba(184, 134, 11, 0.1) 0%, transparent 50%),
         linear-gradient(135deg, #1a1612 0%, #2d2419 25%, #1f1b16 50%, #2a251c 75%, #1a1612 100%);
@@ -55,8 +57,11 @@ body::before {
     margin-bottom: 40px;
     padding: 40px 0;
     border-bottom: 3px solid;
-    border-image: linear-gradient(90deg, transparent, #b8860b, #daa520, #b8860b, transparent) 1;
+    border-image: linear-gradient(90deg, transparent, #ff6b35, #daa520, #ff6b35, transparent) 1;
     position: relative;
+    background: linear-gradient(135deg, rgba(255, 107, 53, 0.05) 0%, rgba(218, 165, 32, 0.05) 100%);
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
 }
 
 .header::before {
@@ -67,7 +72,7 @@ body::before {
     transform: translateX(-50%);
     width: 200px;
     height: 4px;
-    background: linear-gradient(90deg, transparent, #b8860b, transparent);
+    background: linear-gradient(90deg, transparent, #ff6b35, #daa520, #ff6b35, transparent);
     border-radius: 2px;
 }
 
@@ -79,18 +84,19 @@ body::before {
     margin-bottom: 15px;
 }
 
-.logo i {
-    font-size: 3rem;
-    color: #daa520;
-    text-shadow: 
-        0 0 20px rgba(218, 165, 32, 0.6),
-        0 0 40px rgba(218, 165, 32, 0.3),
-        0 4px 8px rgba(0, 0, 0, 0.8);
-    filter: drop-shadow(0 0 5px #b8860b);
+.deadlock-logo-icon {
+    height: 80px;
+    width: auto;
+    transition: all 0.3s ease;
+}
+
+.deadlock-logo-icon:hover {
+    transform: translateY(-3px);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
 }
 
 .header h1 {
-    font-size: 3.5rem;
+    font-size: 3.2rem;
     font-weight: 700;
     font-family: 'Cinzel', serif;
     background: linear-gradient(45deg, #daa520, #b8860b, #cd853f, #daa520);
@@ -100,6 +106,7 @@ body::before {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
     letter-spacing: 2px;
     position: relative;
+    margin: 0;
 }
 
 .header h1::after {
@@ -899,42 +906,64 @@ body::before {
     .yellow-lane {
         grid-column: 1;
         grid-row: 1;
+        background: linear-gradient(135deg, rgba(218, 165, 32, 0.15) 0%, rgba(255, 193, 7, 0.1) 100%);
     }
     
     .blue-lane {
         grid-column: 1;
         grid-row: 2;
+        background: linear-gradient(135deg, rgba(135, 206, 235, 0.15) 0%, rgba(100, 149, 237, 0.1) 100%);
     }
     
     .purple-lane {
         grid-column: 1;
         grid-row: 3;
+        background: linear-gradient(135deg, rgba(221, 160, 221, 0.15) 0%, rgba(186, 85, 211, 0.1) 100%);
     }
     
     .teams-container {
         grid-template-columns: 1fr;
-        gap: 20px;
+        gap: 15px;
     }
     
     .lane-card {
-        padding: 15px;
+        padding: 20px;
     }
     
     .lane-header h4 {
-        font-size: 1.2rem;
+        font-size: 1.3rem;
     }
     
     .player-slot {
-        min-height: 70px;
+        padding: 12px;
     }
     
     .player-name-lane {
-        font-size: 13px;
+        font-size: 0.85rem;
     }
     
     .player-rank-icon {
-        width: 32px;
-        height: 32px;
+        width: 18px;
+        height: 18px;
+    }
+    
+    .logo {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .deadlock-logo-icon {
+        height: 60px;
+    }
+    
+    .header h1 {
+        font-size: 2.4rem;
+        letter-spacing: 1px;
+    }
+    
+    .header {
+        padding: 30px 20px;
+        margin-bottom: 30px;
     }
 }
 
