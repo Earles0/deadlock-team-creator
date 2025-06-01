@@ -609,102 +609,39 @@ body::before {
         inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
-/* Lanes Section - Completely Redesigned */
-.lanes-section {
-    grid-column: 1 / -1;
-    background: 
-        linear-gradient(135deg, rgba(45, 36, 25, 0.95) 0%, rgba(31, 27, 22, 0.9) 100%);
-    border-radius: 16px;
-    padding: 25px;
-    backdrop-filter: blur(10px);
-    border: 3px solid #8b4513;
-    box-shadow: 
-        0 8px 25px rgba(0, 0, 0, 0.6),
-        inset 0 2px 0 rgba(218, 165, 32, 0.2),
-        inset 0 -2px 0 rgba(139, 69, 19, 0.3);
-    animation: slideInUp 0.6s ease;
-    position: relative;
-}
-
-.lanes-section::before {
-    content: '';
-    position: absolute;
-    top: -2px;
-    left: 20px;
-    right: 20px;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, #daa520, transparent);
-}
-
-.lanes-section h3 {
-    color: #daa520;
-    margin-bottom: 20px;
-    font-size: 1.8rem;
-    font-weight: 700;
-    text-align: center;
-    font-family: 'Cinzel', serif;
-    letter-spacing: 1px;
-    text-shadow: 
-        0 2px 4px rgba(0, 0, 0, 0.8),
-        0 0 15px rgba(218, 165, 32, 0.3);
-    position: relative;
-}
-
-.lanes-section h3::after {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80px;
-    height: 3px;
-    background: linear-gradient(90deg, transparent, #daa520, transparent);
-    border-radius: 2px;
-}
-
-/* Balance Stats */
-.balance-stats {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    margin-bottom: 25px;
-    padding: 15px;
-    background: 
-        linear-gradient(135deg, rgba(26, 22, 18, 0.8) 0%, rgba(31, 27, 22, 0.6) 100%);
-    border-radius: 12px;
-    border: 2px solid #654321;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
-}
-
-.stat {
-    text-align: center;
-}
-
-.stat-label {
-    display: block;
-    font-size: 11px;
-    color: #a0906b;
-    margin-bottom: 6px;
-    font-weight: 600;
-    font-family: 'Source Sans Pro', sans-serif;
-    letter-spacing: 0.3px;
-}
-
-.stat-value {
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: #daa520;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
-    font-family: 'Source Sans Pro', sans-serif;
-}
-
 /* Lanes Container */
 .lanes-container {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
     gap: 20px;
-    max-width: 800px;
+    max-width: 1000px;
     margin: 0 auto;
+}
+
+/* Lane positioning */
+.yellow-lane {
+    grid-column: 1;
+    grid-row: 1;
+    border-color: #b8860b;
+    background: 
+        linear-gradient(135deg, rgba(184, 134, 11, 0.1) 0%, rgba(31, 27, 22, 0.95) 100%);
+}
+
+.blue-lane {
+    grid-column: 2;
+    grid-row: 1;
+    border-color: #4682b4;
+    background: 
+        linear-gradient(135deg, rgba(70, 130, 180, 0.1) 0%, rgba(31, 27, 22, 0.95) 100%);
+}
+
+.purple-lane {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    border-color: #8b45ff;
+    background: 
+        linear-gradient(135deg, rgba(139, 69, 255, 0.1) 0%, rgba(31, 27, 22, 0.95) 100%);
 }
 
 /* Lane Cards */
@@ -725,25 +662,6 @@ body::before {
     box-shadow: 
         0 8px 25px rgba(0, 0, 0, 0.5),
         inset 0 1px 0 rgba(218, 165, 32, 0.2);
-}
-
-/* Lane Colors */
-.yellow-lane {
-    border-color: #b8860b;
-    background: 
-        linear-gradient(135deg, rgba(184, 134, 11, 0.1) 0%, rgba(31, 27, 22, 0.95) 100%);
-}
-
-.blue-lane {
-    border-color: #4682b4;
-    background: 
-        linear-gradient(135deg, rgba(70, 130, 180, 0.1) 0%, rgba(31, 27, 22, 0.95) 100%);
-}
-
-.purple-lane {
-    border-color: #8b45ff;
-    background: 
-        linear-gradient(135deg, rgba(139, 69, 255, 0.1) 0%, rgba(31, 27, 22, 0.95) 100%);
 }
 
 /* Lane Header */
@@ -961,7 +879,24 @@ body::before {
 /* Responsive Design */
 @media (max-width: 768px) {
     .lanes-container {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto;
         max-width: 100%;
+    }
+    
+    .yellow-lane {
+        grid-column: 1;
+        grid-row: 1;
+    }
+    
+    .blue-lane {
+        grid-column: 1;
+        grid-row: 2;
+    }
+    
+    .purple-lane {
+        grid-column: 1;
+        grid-row: 3;
     }
     
     .teams-container {
@@ -1165,4 +1100,93 @@ body::before {
 .lane-player:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 15px rgba(218, 165, 32, 0.2);
+}
+
+/* Lanes Section - Completely Redesigned */
+.lanes-section {
+    grid-column: 1 / -1;
+    background: 
+        linear-gradient(135deg, rgba(45, 36, 25, 0.95) 0%, rgba(31, 27, 22, 0.9) 100%);
+    border-radius: 16px;
+    padding: 25px;
+    backdrop-filter: blur(10px);
+    border: 3px solid #8b4513;
+    box-shadow: 
+        0 8px 25px rgba(0, 0, 0, 0.6),
+        inset 0 2px 0 rgba(218, 165, 32, 0.2),
+        inset 0 -2px 0 rgba(139, 69, 19, 0.3);
+    animation: slideInUp 0.6s ease;
+    position: relative;
+}
+
+.lanes-section::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: 20px;
+    right: 20px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #daa520, transparent);
+}
+
+.lanes-section h3 {
+    color: #daa520;
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-align: center;
+    font-family: 'Cinzel', serif;
+    letter-spacing: 1px;
+    text-shadow: 
+        0 2px 4px rgba(0, 0, 0, 0.8),
+        0 0 15px rgba(218, 165, 32, 0.3);
+    position: relative;
+}
+
+.lanes-section h3::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #daa520, transparent);
+    border-radius: 2px;
+}
+
+/* Balance Stats */
+.balance-stats {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 25px;
+    padding: 15px;
+    background: 
+        linear-gradient(135deg, rgba(26, 22, 18, 0.8) 0%, rgba(31, 27, 22, 0.6) 100%);
+    border-radius: 12px;
+    border: 2px solid #654321;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.stat {
+    text-align: center;
+}
+
+.stat-label {
+    display: block;
+    font-size: 11px;
+    color: #a0906b;
+    margin-bottom: 6px;
+    font-weight: 600;
+    font-family: 'Source Sans Pro', sans-serif;
+    letter-spacing: 0.3px;
+}
+
+.stat-value {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #daa520;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+    font-family: 'Source Sans Pro', sans-serif;
 } 
