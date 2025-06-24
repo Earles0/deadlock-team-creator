@@ -28,21 +28,10 @@ The application supports all current Deadlock ranks with **official rank icons**
 
 Each rank has 6 sublevels (I, II, III, IV, V, VI) that affect the exact MMR calculation.
 
-## ✨ Features
-
-- **🎯 Lane-by-Lane Balancing**: Advanced algorithm that balances each individual lane matchup
-- **📈 Dual-Level Balance**: Overall team balance + individual lane balance scores
-- **🖼️ Official Rank Icons**: Displays actual Deadlock rank badges from the game
-- **🎨 Color-Coded Lanes**: Purple, Green, and Yellow lane themes matching Deadlock
-- **📱 Responsive Design**: Works perfectly on desktop, tablet, and mobile devices
-- **⚡ Real-time Progress**: Visual progress bar showing player count (0/12)
-- **🔄 Smart Algorithm**: Uses snake draft system for optimal team distribution
-- **📊 Advanced Stats**: Individual lane balance percentages and overall team balance
-
 ## 🚀 How to Use
 
 ### 1. Open the Website
-Simply open `index.html` in your web browser.
+(https://earles0.github.io/deadlock-team-creator/)
 
 ### 2. Add Players (Exactly 12 Required)
 - Enter the player's name
